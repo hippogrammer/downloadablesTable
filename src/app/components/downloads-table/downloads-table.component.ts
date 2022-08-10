@@ -66,13 +66,14 @@ export class DownloadsTableComponent implements OnInit {
             ?.getAttribute('data-device'),
         }
       );
+      element.classList.add('selected-row');
     } else {
       this.selectedRows.delete(
         element.querySelector('[data-fileName]')?.getAttribute('data-fileName')
       );
+      element.classList.remove('selected-row');
     }
     this.allSelected = this.selectedRows.size === this.availableCount;
-    element.classList.toggle('selected-row');
   }
 
   onDownloadClicked() {
