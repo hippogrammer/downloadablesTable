@@ -1,0 +1,68 @@
+<div class="table-container" *ngIf="data" role="main">
+  <table id="downloadablesGrid">
+    <caption>
+      <h3>Downloadable Files</h3>
+    </caption>
+    <thead role="rowgroup">
+      <tr tabindex="-1">
+        <th colspan="2" aria-label="Select all rows">
+          <input
+            id="selectAll"
+            type="checkbox"
+            [checked]="allSelected"
+            [indeterminate]="selectedRows.size && !allSelected"
+            (click)="onSelectAllCheckboxClicked()"
+          />
+          <label for="selectAll"
+            ><ng-container *ngIf="selectedRows.size; else noneSelected"
+              >Selected {{ selectedRows.size }} </ng-container
+            ><ng-template #noneSelected>None Selected</ng-template></label
+          >
+        </th>
+        <th colspan="2" class="download-selected">
+          <button
+            id="downloadButton"
+            (click)="onDownloadClicked()"
+            [disabled]="!selectedRows.size"
+            [class.disabledBtn]="!selectedRows.size"
+          >
+            <i class="material-icons">download</i> Download Selected
+          </button>
+        </th>
+      </tr>
+      <tr tabindex="-1">
+        <th scope="col" style="visibility: hidden">checkbox</th>
+        <th scope="col">Name</th>
+        <th scope="col">Device</th>
+        <th scope="col">Path</th>
+        <th scope="col">Status</th>
+      </tr>
+    </thead>
+    <tbody (click)="onSelectionChange($event)">
+      <tr *ngFor="let file of data" tabindex="0" role="row">
+        <td [attr.data-label]="'Select File'">
+          <input
+            [id]="file.name + 'Input'"
+            type="checkbox"
+            [attr.aria-label]="'Select ' + file.name"
+            [value]="file.name"
+            [disabled]="file.status !== 'available'"
+          />
+        </td>
+        <td [attr.data-label]="'Name'" [attr.data-filename]="file.name">
+          {{ file.name }}
+        </td>
+        <td [attr.data-device]="file.device" [attr.data-label]="'Device'">
+          {{ file.device }}
+        </td>
+        <td [attr.data-path]="file.path" [attr.data-label]="'Path'">
+          {{ file.path }}
+        </td>
+        <td [attr.data-status]="file.status" [attr.data-label]="'Status'">
+          <span *ngIf="file.status === 'available'" class="green-dot"> </span>
+          {{ file.status | titlecase }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
